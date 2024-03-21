@@ -1,0 +1,11 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Learning about ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rafi Salman al-farizi",
+  "license": "ISC"
+}
