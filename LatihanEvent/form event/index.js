@@ -32,5 +32,37 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('inputNama: blur');
     document.getElementById('notifikasiSisaKarakter').style.visibility= 'hidden';
   });
-  
+  /*event onchange (fungsi validasi captcha */
+  document.getElementById('inputCaptcha').addEventListener('change',function () {
+    console.log('inputCaptcha: change');
+    
+    const inputCaptcha = document.getElementById('inputCaptcha').value;
+    const submitButtonStatus = document.getElementById('submitButton');
+    
+    if (inputCaptcha === 'PRNU') {
+      submitButtonStatus.removeAttribute('disabled');
+    } else {
+      submitButtonStatus.setAttribute('disabled','');
+    }
+  });
+  //method re-validasi captcha
+  document.getElementById('formDataDiri').addEventListener('submit',function (event) {
+    const inputCaptcha = document.getElementById('inputCaptcha').value;
+    
+    if (inputCaptcha == 'PRNU') {
+      alert('selamat,captcha anda lolos!');
+    } else {
+      alert('maaf,captcha yang anda input salah :(');
+      document.getElementById('submitButton').setAttribute('disabled','');
+    }
+    event.preventDefault();
+  });
+  //event oncopy,alert muncul ketika copy
+  document.getElementById('inputCopy').addEventListener('copy',function () {
+    alert('anda mengcopy sesuatu!');
+  });
+  /*event onpaste,alert muncul ketika paste*/
+  document.getElementById('inputPaste').addEventListener('paste',function() {
+    alert('anda mengpaste sesuatu!');
+  });
 });
