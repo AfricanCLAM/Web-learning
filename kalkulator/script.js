@@ -29,12 +29,12 @@ keys.addEventListener('click',e => {
         const displayedNum = display.textContent;
         const previousKeyType = calculator.dataset.previousKeyType;
       if (!action) {
-         if (displayedNum === '0' || previousKeyType === 'operator') {
+         if (displayedNum === '0' || previousKeyType === 'operator' || previousKeyType === 'calculate') {
             display.textContent = keyContent;
          } else {
             display.textContent = displayedNum + keyContent;
-            calculator.dataset.previousKeyType = 'number';
          }
+         calculator.dataset.previousKeyType = 'number';
       }//operator button
       if (
         action === 'add' ||
@@ -46,8 +46,15 @@ keys.addEventListener('click',e => {
         const operator = calculator.dataset.operator;
         const secondValue = displayedNum;
 
-        if (firstValue && operator) {
-            display.textContent = calculate(firstValue,operator,secondValue);
+        if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
+           const calcValue = calculate(firstValue,operator,secondValue);
+            display.textContent = calcValue;
+
+            //update calculated value to firstValue
+            calculator.dataset.firstValue = calcValue;
+        } else {
+            //if there are no calculations,set displayedNum as the first value
+            calculator.dataset.firstValue = displayedNum;
         }
 
        key.classList.add('is-depressed');
@@ -56,21 +63,35 @@ keys.addEventListener('click',e => {
        calculator.dataset.firstValue = displayedNum;
        calculator.dataset.operator = action;
     }//decimal button
-     if (action == 'decimal') {
+     if (action === 'decimal') {
         if (!displayedNum.includes('.')) {
         display.textContent = displayedNum + '.';
-        } else if (previousKeyType = 'operator' ) {
+        } else if (previousKeyType === 'operator' || previousKeyType === 'calculate' ) {
             display.textContent = '0.'
         }
         calculator.dataset.previousKeyType = 'decimal';
     }//clear button
-     if (action == 'clear') {
+    if (action !== 'clear') {
+        const clearButton = calculator.querySelector('[data-action=clear]')
+    }
+     if (action === 'clear') {
         calculator.dataset.previousKeyType = 'clear';
     }//calculate button
-     if (action == 'calculate') {
+     if (action === 'calculate') {
         const firstValue = calculator.dataset.firstValue;
         const operator = calculator.dataset.operator;
         const secondValue = displayedNum;
+
+        if (firstValue) {
+            if (previousKeyType === 'calculate') {
+                firstValue = displayedNum;
+                secondValue = calculator.dataset.modValue;
+            }
+            display.textContent = calculate(firstValue,operator,secondValue);
+        }
+
+        //set modValue attribute
+        calculator.dataset.modValue = secondValue;
         calculator.dataset.previousKeyType = 'calculate';
     }
     //do nothing if string has a dot
