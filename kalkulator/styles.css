@@ -1,4 +1,10 @@
+.calculator {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 100vh;
+}
+
 .calculator__keys {
     display: grid;
-    
 }
